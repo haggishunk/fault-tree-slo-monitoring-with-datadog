@@ -1,0 +1,34 @@
+{
+    "provider": {
+        "datadog": {}
+    },
+    "resource": {
+        "datadog_monitor": {
+            "OurApp-loadbalancerA-XXErrorRateHigh": {
+                "name": "OurApp loadbalancerA - 5XX Error Rate High",
+                "query": "avg(last_4h):anomalies(default(sum:aws.elb.httpcode_backend_5xx{ loadbalancername:awselb01}, 0) / default(sum:aws.elb.request_count{ loadbalancername:awselb01 }, 0), 'agile', 5, direction='above', alert_window='last_10m', interval='60', count_default_zero='True', seasonality='daily') > 1.0",
+                "message": "{{#is_alert}}OurApp loadbalancerA 5XX Error rate is higher than normal\n\nID: [id001](https://eng.team.com/apps/id001)\n\nSlack: [#chan](https://team.slack.com/messages/chan)\n\n{{/is_alert}} @slack-chan",
+                "type": "query alert",
+                "tags": [
+                    "env:prod",
+                    "generator:collie"
+                ],
+                "notify_audit": false,
+                "locked": false,
+                "timeout_h": 0,
+                "silenced": {},
+                "include_tags": true,
+                "evaluation_delay": 900,
+                "new_host_delay": 300,
+                "require_full_window": false,
+                "notify_no_data": false,
+                "renotify_interval": 0,
+                "escalation_message": null,
+                "threshold_windows": {
+                    "recovery_window": "last_10m",
+                    "trigger_window": "last_10m"
+                }
+            }
+        }
+    }
+}

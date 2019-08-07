@@ -1,0 +1,57 @@
+{
+    "provider": {
+        "datadog": {}
+    },
+    "resource": {
+        "datadog_monitor": {
+            "OurAppinstancesT-InboundNetworkTrafficLow": {
+                "name": "OurApp instancesT - Inbound Network Traffic Low",
+                "query": "avg(last_10m):default(sum:aws.ec2.network_in{ name:ourapp}, 0) < 10000000",
+                "message": "{{#is_alert}}OurApp instancesT Inbound Network Traffic is lower than 10000000\n\nID: [id001](https://eng.team.com/apps/id001)\n\nSlack: [#chan](https://team.slack.com/messages/chan)\n\n{{/is_alert}} @slack-chan",
+                "type": "query alert",
+                "tags": [
+                    "env:prod",
+                    "generator:collie"
+                ],
+                "notify_audit": false,
+                "locked": false,
+                "timeout_h": 0,
+                "silenced": {},
+                "include_tags": true,
+                "evaluation_delay": 900,
+                "new_host_delay": 300,
+                "require_full_window": false,
+                "notify_no_data": false,
+                "renotify_interval": 0,
+                "escalation_message": null,
+                "thresholds": {
+                    "critical": 10000000
+                }
+            },
+            "OurAppinstancesT-OutboundNetworkTrafficLow": {
+                "name": "OurApp instancesT - Outbound Network Traffic Low",
+                "query": "avg(last_10m):default(sum:aws.ec2.network_out{ name:ourapp}, 0) < 10000000",
+                "message": "{{#is_alert}}OurApp instancesT Outbound Network Traffic is lower than 10000000\n\nID: [id001](https://eng.team.com/apps/id001)\n\nSlack: [#chan](https://team.slack.com/messages/chan)\n\n{{/is_alert}} @slack-chan",
+                "type": "query alert",
+                "tags": [
+                    "env:prod",
+                    "generator:collie"
+                ],
+                "notify_audit": false,
+                "locked": false,
+                "timeout_h": 0,
+                "silenced": {},
+                "include_tags": true,
+                "evaluation_delay": 900,
+                "new_host_delay": 300,
+                "require_full_window": false,
+                "notify_no_data": false,
+                "renotify_interval": 0,
+                "escalation_message": null,
+                "thresholds": {
+                    "critical": 10000000
+                }
+            }
+        }
+    }
+}
