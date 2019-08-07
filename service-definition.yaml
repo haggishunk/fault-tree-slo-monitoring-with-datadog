@@ -1,0 +1,51 @@
+System:
+  Name:                 OurService
+  ID:                   id001
+  Contact:
+    Page:               OurPagerduty
+    Chat:               "#slack-channel"
+  SLA:
+    Availability:       99%
+    Latency:
+      P90:              200ms
+      P99:              500ms
+    Error Rate:         0.1%
+    Throughput:         1000rps
+    Saturation:         80% Utilization
+  MonitorTags:
+    - “generator:collie”
+    - “maturity:development”
+  Components:
+    - Load Balancer:
+      Type:             aws.elb
+      Tags:             “loadbalancername:awselb-001,env:prod”
+      Monitors:
+        - Type:         requests-low
+          Threshold:    1000rps
+          AlertWindow:  30m
+          Page:         true
+    - Web Server:
+      Type:             nginx
+      Tags:             “app:id001,env:prod,role:web”
+      Monitors:
+        - Type:         5xx-error-rate  
+          Threshold:    0.1%
+          AlertWindow:  15m
+    - Application:
+      Type:             custom
+      Tags:             “app:id001,env:prod,role:app”
+      Monitors:
+        - Type:         threshold
+          Metric:       ourapp.latency.p90
+          Threshold:    200ms
+          AlertWindow:  10m
+        - Type:         threshold
+          Metric:       ourapp.latency.p99
+          Threshold:    500ms
+          AlertWindow:  10m
+        - Storage:
+      Type:             postgresql
+      Tags:             “app:id001,env:prod,role:db”
+      Monitors:
+        - Type:         can-connect
+          AlertWindow:  5m
